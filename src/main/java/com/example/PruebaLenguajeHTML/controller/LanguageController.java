@@ -5,6 +5,7 @@ package com.example.PruebaLenguajeHTML.controller;
 
 import com.example.PruebaLenguajeHTML.model.LanguageModel;
 import com.example.PruebaLenguajeHTML.repository.LanguageRepository;
+import com.example.PruebaLenguajeHTML.utils.Utils;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,34 @@ public class LanguageController {
 	
 
 	// Get All Notes
-	@GetMapping("/test")
+	@GetMapping("/language")
 	public List<LanguageModel> getAllNotes() {
-		System.out.println("test");
 		return languageRepository.findAll();
 	}
 	
 	@PostMapping("/language")
 	public LanguageModel createNote(@Valid @RequestBody LanguageModel language) {
 		return languageRepository.save(language);
+	}
+	
+	@PostMapping("/languageSimbol")
+	public String getLanguaje(@RequestParam(value="word") String word) {
+		
+		List<LanguageModel> language=languageRepository.findAll();
+		
+		Utils util= new Utils();
+		
+		
+
+		word = word.trim();
+		String[] arrayWord = word.split(" ");
+		String simb = arrayWord[0].charAt(0) + "";
+
+		
+
+		return util.validationSimbol(languageRepository.findBySimbol(simb), arrayWord);
+		
+		
 	}
 
 
