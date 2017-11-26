@@ -1,5 +1,6 @@
 package com.example.PruebaLenguajeHTML.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.PruebaLenguajeHTML.model.LanguageModel;
@@ -13,8 +14,7 @@ public class Utils {
 		String word = arrayWord[1];
 		int count = arrayWord[0].length();
 
-		String completeHtml = "<!DOCTYPE html>\r\n" + "<html>\r\n" + "<head>\r\n" + "<meta charset=\"utf-8\">\r\n"
-				+ "<title></title>\r\n" + "</head>\r\n" + "<body>\r\n";
+		String completeHtml = "";
 
 		if (list.get(0).getSimbol().equals("#")) {
 			completeHtml = completeHtml + "<" + content + count + ">" + word + "</" + content + count + ">\r\n";
@@ -22,32 +22,46 @@ public class Utils {
 			completeHtml = completeHtml + "<" + content + ">" + word + "</" + content + ">\r\n";
 		}
 
-		completeHtml = completeHtml + "</body>\r\n" + "</html>";
-
 		System.out.print("simbol " + simbol + "content " + content + " count " + count + " h " + completeHtml);
 		return completeHtml;
 	}
 
-	public List<String> distributeWords(String words,List<LanguageModel> language) {
-		List<LanguageModel> wordsList;
+	public  List<String>  distributeWords(String words,List<LanguageModel> language) {
+		 List<String> wordsList = new 	ArrayList<String>();
 		
-		String simbol = null;
-		String wordComplete=null;
-		boolean flag=false;
+		String simbol = "";
+		String wordComplete="";
+int countEmpty=0;
 		for (int i = 0; i < words.length(); i++) {
 			String c = words.charAt(i)+"";
+			
 
-			for(int j=0;i<language.size();j++) {
-				if(c==language.get(j).getSimbol()) {
-					flag=true;
+			for(int j=0;j<language.size();j++) {
+				if(c.equals(language.get(j).getSimbol().trim())) {
+					System.out.println("simbolos "+language.get(j).getSimbol().trim());
+					
 					simbol=simbol+c;
+					
 				}else {
-					flag=false;
-					wordComplete=wordComplete+c;
+					
+					if(c.equals(" ")) {
+						countEmpty++;
+						wordComplete=wordComplete+"-";
+					}else {
+						wordComplete=wordComplete+c;
+					}
+					
 				}
 			}
+			if(countEmpty>2) {
+				wordsList.add(simbol+wordComplete);
+				countEmpty=0;
+				wordComplete="";
+				simbol="";
+			}
+			
 		}
-		return null;
+		return wordsList;
 
 	}
 }
